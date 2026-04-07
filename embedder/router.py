@@ -1,3 +1,4 @@
+# OUTDATED, EMBEDDER CALLED BY KAFKA NOW DIRECTLY FROM SERVICE.PY
 from fastapi import FastAPI
 
 from service import data_loader, build_index
