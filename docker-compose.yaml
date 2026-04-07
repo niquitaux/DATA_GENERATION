@@ -1,0 +1,23 @@
+services:
+  embedder:
+    build: ./embedder
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env  
+    volumes:
+      - ./synthetic_data.json:/embedder/synthetic_data.json
+      - faiss_data:/faiss_data
+
+  searcher:
+    build: ./searcher
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env  
+    volumes:
+      - ./synthetic_data.json:/searcher/synthetic_data.json
+      - faiss_data:/faiss_data
+
+volumes:  # вот это вот на postgre заменить
+  faiss_data:
