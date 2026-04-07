@@ -19,5 +19,12 @@ services:
       - ./synthetic_data.json:/searcher/synthetic_data.json
       - faiss_data:/faiss_data
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+
 volumes:  # вот это вот на postgre заменить
   faiss_data:
