@@ -2,13 +2,20 @@ import faiss
 import json
 import numpy as np
 import httpx
-from config import YANDEX_EMBEDDING_URL, YANDEX_LLM_URL, headers, query_payload, data
+import boto3
+import asyncio
+from config import YANDEX_EMBEDDING_URL, YANDEX_LLM_URL, headers, query_payload, data, MINIO_URL, MINIO_KEY_ID, MINIO_ACCESS_KEY
 
 
 client = httpx.AsyncClient()
-index = faiss.read_index("/faiss_data/index.faiss")
+s3 = boto3.client(
+    "s3",
+    endpoint_url=MINIO_URL,
+    aws_access_key_id=MINIO_KEY_ID,
+    aws_secret_access_key=MINIO_ACCESS_KEY,
+)
 
-async def data_loader():  # вот это вот на бд заменить
+async def data_loader():  # TODO вот это вот на бд заменить
     with open("synthetic_data.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -20,6 +27,12 @@ async def data_loader():  # вот это вот на бд заменить
 
 
 async def search_docs(query, k=3):
+    resp = await asyncio.to_thread(
+        s3.get_object, Bucket="faiss-index", Key="index.faiss"
+    )
+    buf = np.frombuffer(resp["Body"].read(), dtype=np.uint8)
+    index = faiss.deserialize_index(buf)
+
     query_payload["text"] = query
     response = await client.post(YANDEX_EMBEDDING_URL, headers=headers, json=query_payload)
 

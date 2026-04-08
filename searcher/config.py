@@ -18,6 +18,10 @@ query_payload = {
 
 data = {
         "model": f"gpt://{YANDEX_FOLDER_ID}/{YANDEX_LLM_MODEL}",
-        "temperature": 0.5,
+        "temperature": 0.5,  # TODO put params in yaml mb
         "max_output_tokens": 1500
     }
+
+MINIO_URL = "http://minio:9000"
+MINIO_KEY_ID = "minioadmin"  # TODO should be in .env file but nvm
+MINIO_ACCESS_KEY = "minioadmin"

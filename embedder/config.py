@@ -4,6 +4,7 @@ YANDEX_API_KEY = os.getenv('YANDEX_API_KEY')
 YANDEX_FOLDER_ID = os.getenv('YANDEX_FOLDER_ID')
 YANDEX_EMBEDDING_URL = os.getenv('YANDEX_EMBEDDING_URL')
 
+
 headers = {
     "Authorization": f"Api-Key {YANDEX_API_KEY}",
     "Content-Type": "application/json",
@@ -12,3 +13,12 @@ headers = {
 payload = {
     "modelUri": f"emb://{YANDEX_FOLDER_ID}/text-search-doc/latest",
 }
+
+KAFKA = "kafka:9092"
+TOPIC = "documents-to-embed"
+
+SEMAPHORE_SIZE = 8
+
+MINIO_URL = "http://minio:9000"
+MINIO_KEY_ID = "minioadmin"  # TODO should be in .env file but nvm
+MINIO_ACCESS_KEY = "minioadmin"
